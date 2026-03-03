@@ -1,0 +1,68 @@
+{
+    "GSS": {
+        "nodes": [
+            {
+                "label": "Grayscale",
+                "pos": [
+                    445,
+                    289
+                ],
+                "params": {}
+            },
+            {
+                "label": "Sub Images",
+                "pos": [
+                    592,
+                    230
+                ],
+                "params": {}
+            },
+            {
+                "label": "Sub Images",
+                "pos": [
+                    558,
+                    94
+                ],
+                "params": {}
+            }
+        ],
+        "links": [
+            {
+                "node1": "SOURCE IMAGE",
+                "pin1_idx": 0,
+                "node2": 0,
+                "pin2_idx": 0
+            },
+            {
+                "node1": "SOURCE IMAGE",
+                "pin1_idx": 0,
+                "node2": 1,
+                "pin2_idx": 1
+            },
+            {
+                "node1": 0,
+                "pin1_idx": 1,
+                "node2": 1,
+                "pin2_idx": 0
+            },
+            {
+                "node1": "SOURCE IMAGE",
+                "pin1_idx": 0,
+                "node2": 2,
+                "pin2_idx": 0
+            },
+            {
+                "node1": 1,
+                "pin1_idx": 2,
+                "node2": 2,
+                "pin2_idx": 1
+            },
+            {
+                "node1": 2,
+                "pin1_idx": 2,
+                "node2": "RESULT IMAGE",
+                "pin2_idx": 0
+            }
+        ]
+    }
+}
