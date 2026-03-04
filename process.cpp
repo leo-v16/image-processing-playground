@@ -540,4 +540,15 @@ extern "C" {
             }
         }
     }
+
+    EXPORT void bitslice(unsigned char* data, int width, int height, int channel, int bit_place) {
+        for (int y = 0; y < height; ++y) {
+            for (int x = 0; x < width; ++x) {
+                int idx = (y * width + x) * channel;
+                data[idx] &= 1 << bit_place;
+                data[idx + 1] &= 1 << bit_place;
+                data[idx + 2] &= 1 << bit_place;
+            }
+        }
+    }
 }

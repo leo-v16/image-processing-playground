@@ -67,6 +67,11 @@ class UIMixin:
                 dpg.add_button(label="SAVE RESULT", callback=lambda: dpg.show_item("image_saver"), width=150)
                 dpg.add_button(label="DELETE SELECTED", callback=self.delete_selected, width=150)
                 dpg.add_button(label="CLEAR", callback=self.clear_editor, width=100)
+                dpg.add_spacer(width=20)
+                # Loading/Progress Indicators
+                dpg.add_loading_indicator(tag="loading_spinner", show=False, radius=2.0, style=1)
+                dpg.add_text("Ready", tag="status_text", color=(100, 255, 100))
+                dpg.add_progress_bar(tag="progress_bar", show=False, width=200)
             
             with dpg.node_editor(tag="node_editor", callback=self.link_callback, delink_callback=self.delink_callback):
                 with dpg.node(label="SOURCE IMAGE", pos=[20, 50]):

@@ -16,6 +16,9 @@ class EngineMixin:
         node_type = dpg.get_item_user_data(node) or label
         attrs = [c for c in dpg.get_item_children(node, 1) if dpg.get_item_configuration(c)["attribute_type"] == dpg.mvNode_Attr_Input]
         
+        # Update progress text
+        dpg.set_value("status_text", f"Processing: {node_type}...")
+        
         res = None
         if node_type == "Pipeline Node":
             p_name = self.node_params[node]["pipeline_name"]
@@ -87,11 +90,34 @@ class EngineMixin:
 
     def process_pipeline(self, sender=None, app_data=None, user_data=None):
         if not self.input_image or not DLL_LOADED: return
+        
+        # Show loading state
+        dpg.configure_item("loading_spinner", show=True)
+        dpg.configure_item("progress_bar", show=True, overlay="Processing...")
+        dpg.set_value("progress_bar", 0.5) # Indeterminate-like start
+        dpg.set_value("status_text", "Preparing...")
+        
         w, h = self.input_image.size
         links = dpg.get_item_children("node_editor", 0)
         link_map = {dpg.get_item_configuration(l)["attr_2"]: dpg.get_item_configuration(l)["attr_1"] for l in links}
-        final_bytes = self.get_node_output(dpg.get_alias_id("result_pin"), link_map, {}, w, h)
-        if final_bytes:
-            from PIL import Image
-            self.output_image = Image.frombytes("RGBA", (w, h), bytes(final_bytes))
-            self._update_texture_from_image(self.output_image, "output_tex", "output_image_widget")
+        
+        try:
+            final_bytes = self.get_node_output(dpg.get_alias_id("result_pin"), link_map, {}, w, h)
+            if final_bytes:
+                from PIL import Image
+                self.output_image = Image.frombytes("RGBA", (w, h), bytes(final_bytes))
+                self._update_texture_from_image(self.output_image, "output_tex", "output_image_widget")
+                dpg.set_value("status_text", "Success!")
+                dpg.configure_item("status_text", color=(100, 255, 100))
+            else:
+                dpg.set_value("status_text", "No Output Data")
+                dpg.configure_item("status_text", color=(255, 100, 100))
+        except Exception as e:
+            print(f"[ENGINE] Error: {e}")
+            dpg.set_value("status_text", "Processing Error")
+            dpg.configure_item("status_text", color=(255, 100, 100))
+        
+        # Reset progress bar/spinner
+        dpg.set_value("progress_bar", 1.0)
+        dpg.configure_item("loading_spinner", show=False)
+        dpg.configure_item("progress_bar", show=False)

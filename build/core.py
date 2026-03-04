@@ -53,6 +53,10 @@ FILTER_REGISTRY = {
     "Multiply": {
         "func": "multiply", "category": "Transforms", 
         "params": [{"name": "factor", "label": "Factor", "type": "float", "default": 1.0, "min": 0.0, "max": 10.0}]
+    },
+    "Bit Plane Slice": {
+        "func": "bitslice", "category": "Transforms",
+        "params": [{"name": "bit_place", "label": "Bit Place", "type": "int", "default": 7, "min": 1, "max": 7}]
     }
 }
 
