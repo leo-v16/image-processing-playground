@@ -69,8 +69,7 @@ iip.bat
 
 This script will:
 
-* Compile the C++ code
-* Generate `process.dll`
+* Check if the dependencies Pillow and numpy are installed
 * Launch the Python application
 
 ---
@@ -86,10 +85,11 @@ Open `process.cpp` and add your function.
 Your function **must follow this signature**:
 
 ```cpp
-// Use extern "C" to prevent name mangling so Python can find the function
+// Write the code inside extern "C" to prevent name mangling so Python can find the function
+// EXPORT is #defined __declspec(dllexport) 
 extern "C" {
 
-void your_function_name(
+EXPORT void your_function_name(
     unsigned char* image_data,
     int width,
     int height,
